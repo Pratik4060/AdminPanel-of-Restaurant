@@ -16,6 +16,26 @@ enum OrderStatus {
   CANCELED
 }
 
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  UPI
+  WALLET
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  KITCHEN
+  CASHIER
+  WAITER
+}
+
 enum MealType {
   BREAKFAST
   LUNCH
@@ -68,6 +88,7 @@ model Order {
   customerId   String?
   customerName String
   tableNumber  String
+  guestCount   Int         @default(1)
   status       OrderStatus @default(PENDING)
   totalAmount  Decimal     @db.Decimal(10, 2)
   createdAt    DateTime    @default(now())
@@ -75,6 +96,7 @@ model Order {
 
   customer Customer?  @relation(fields: [customerId], references: [id])
   items    OrderItem[]
+  payments Payment[]
 }
 
 model OrderItem {
@@ -99,4 +121,29 @@ model Offer {
   validUntil  DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  paymentId   String        @unique
+  orderId     String
+  amount      Decimal       @db.Decimal(10, 2)
+  method      PaymentMethod
+  status      PaymentStatus @default(COMPLETED)
+  paidAt      DateTime      @default(now())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model AppUser {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

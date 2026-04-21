@@ -93,6 +93,7 @@ export const createOrder = async (payload: CreateOrderInput) => {
       customerId: customer.id,
       customerName: payload.customerName,
       tableNumber: payload.tableNumber,
+      guestCount: payload.guestCount ?? 1,
       status: OrderStatus.PENDING,
       totalAmount,
       items: {

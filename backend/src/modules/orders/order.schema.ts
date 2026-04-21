@@ -4,6 +4,7 @@ import { z } from "zod";
 export const createOrderSchema = z.object({
   customerName: z.string().min(2),
   tableNumber: z.string().min(1),
+  guestCount: z.number().int().min(1).optional(),
   customerPhone: z.string().optional(),
   items: z
     .array(
