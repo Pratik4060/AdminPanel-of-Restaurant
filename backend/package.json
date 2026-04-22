@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "prisma generate && prisma migrate deploy && tsc",
+    "build": "prisma generate --schema Prisma/schema.prisma && prisma migrate deploy --schema Prisma/schema.prisma && tsc",
     "start": "node dist/server.js",
     "seed": "tsx src/prisma/seed.ts"
   },
@@ -35,7 +35,10 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
+  "prisma": {
+    "schema": "Prisma/schema.prisma"
+  },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   }
 }
